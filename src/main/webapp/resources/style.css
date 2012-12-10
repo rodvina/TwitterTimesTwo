@@ -1,0 +1,9 @@
+body {
+	font-family: arial;
+}
+
+#dweetList {
+    width: 500px;
+    border: 1px solid black;
+    background-color: #eeeeff;
+}

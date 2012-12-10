@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
+
+    <bean id="dweetRepository" class="com.habuma.ttt.JdbcDweetRepository">
+        <constructor-arg ref="jdbcTemplate" />
+    </bean>    
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"> 
+        <constructor-arg ref="dataSource" />
+    </bean>
+
+	<!-- Allows for environment specific beans -->  
+    <beans profile="prod">
+        <jee:jndi-lookup id="dataSource" jndi-name="jdbc/ds"></jee:jndi-lookup>    
+    </beans>
+     <beans profile="local">
+        <jdbc:embedded-database id="dataSource" type="H2">
+        	<jdbc:script location="classpath:schema.sql"/>
+    	</jdbc:embedded-database>  
+    </beans>
+
+</beans>
